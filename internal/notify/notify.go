@@ -107,9 +107,10 @@ func PaceAlert(webhookURL string, weeklyUtil float64, weeklyResetsAt string, pro
 	timeUntilReset := time.Until(resetsAt)
 
 	msg := fmt.Sprintf(
-		"Claude Pro 週用量進度\n\n本週已用        %d%%\n預測週末剩餘    %d%%\n距 Reset        %s\n\n今天建議再用    %d%%\n\n%s",
+		"Claude Pro 週用量進度\n\n本週已用        %d%%\n預測週末剩餘    %d%%\nReset 時間      %s（%s 後）\n\n今天建議再用    %d%%\n\n%s",
 		int(weeklyUtil),
 		int(projectedRemaining),
+		formatTime(weeklyResetsAt),
 		formatDuration(timeUntilReset),
 		int(dailySuggestion),
 		copy,
