@@ -1,9 +1,9 @@
 [Unit]
-Description=Run Claude Sentinel every 10 minutes
+Description=Run Claude Sentinel every 3 minutes
 
 [Timer]
 OnActiveSec=1min
-OnUnitInactiveSec=10min
+OnUnitInactiveSec=3min
 AccuracySec=30sec
 Persistent=true
 Unit=claude-sentinel.service

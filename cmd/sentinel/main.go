@@ -18,7 +18,7 @@ const (
 	defaultStatePath        = "/app/state.json"
 	weeklyMinutes           = float64(7 * 24 * 60)
 	minElapsedBeforePace    = 24 * time.Hour
-	paceAlertInterval       = 30 * time.Minute
+	paceAlertInterval       = 20 * time.Minute
 )
 
 func main() {
