@@ -98,20 +98,22 @@ func thresholdLabel(threshold int) string {
 	return "提醒"
 }
 
-// PaceAlert sends the hourly pace notification with emotional copy based on projected remaining %.
-func PaceAlert(webhookURL string, weeklyUtil float64, weeklyResetsAt string, projectedRemaining float64, dailySuggestion float64) error {
+// PaceAlert sends the pace notification with emotional copy based on projected remaining %.
+func PaceAlert(webhookURL string, sessionUtil float64, sessionResetsAt string, weeklyUtil float64, weeklyResetsAt string, projectedRemaining float64, dailySuggestion float64) error {
 	tier := paceTier(projectedRemaining)
 	copy := paceMessages[tier][rand.Intn(10)]
 
-	resetsAt, _ := time.Parse(time.RFC3339Nano, weeklyResetsAt)
-	timeUntilReset := time.Until(resetsAt)
+	weeklyResetTime, _ := time.Parse(time.RFC3339Nano, weeklyResetsAt)
+	timeUntilWeeklyReset := time.Until(weeklyResetTime)
 
 	msg := fmt.Sprintf(
-		"Claude Pro 週用量進度\n\n本週已用        %d%%\n預測週末剩餘    %d%%\nReset 時間      %s（%s 後）\n\n今天建議再用    %d%%\n\n%s",
+		"Claude Pro 週用量進度\n\nSession 剩餘    %d%%\n下次 Reset      %s\n\n本週已用        %d%%\n預測週末剩餘    %d%%\n本週 Reset      %s（%s 後）\n\n今天建議再用    %d%%\n\n%s",
+		remaining(sessionUtil),
+		formatTime(sessionResetsAt),
 		int(weeklyUtil),
 		int(projectedRemaining),
 		formatTime(weeklyResetsAt),
-		formatDuration(timeUntilReset),
+		formatDuration(timeUntilWeeklyReset),
 		int(dailySuggestion),
 		copy,
 	)

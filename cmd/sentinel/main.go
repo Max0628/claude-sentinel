@@ -91,7 +91,7 @@ func main() {
 		if shouldSendPaceAlert(s.LastPaceAlertSentAt, paceAlertInterval) {
 			elapsed := time.Since(weeklyStartTime(usage.SevenDay.ResetsAt))
 			projected, daily := calcPace(usage.SevenDay.Utilization, elapsed, usage.SevenDay.ResetsAt)
-			if err := notify.PaceAlert(webhookURL, usage.SevenDay.Utilization, usage.SevenDay.ResetsAt, projected, daily); err != nil {
+			if err := notify.PaceAlert(webhookURL, usage.FiveHour.Utilization, usage.FiveHour.ResetsAt, usage.SevenDay.Utilization, usage.SevenDay.ResetsAt, projected, daily); err != nil {
 				log.Printf("notify pace alert: %v", err)
 			} else {
 				fmt.Printf("notified: pace alert (projected remaining %.0f%%)\n", projected)
