@@ -106,12 +106,23 @@ func PaceAlert(webhookURL string, sessionUtil float64, sessionResetsAt string, w
 	weeklyResetTime, _ := time.Parse(time.RFC3339Nano, weeklyResetsAt)
 	timeUntilWeeklyReset := time.Until(weeklyResetTime)
 
+	var weeklyProjectionLine string
+	if projectedRemaining <= 0 {
+		weeklyProjectionLine = "週末預期會用完"
+	} else {
+		weeklyProjectionLine = fmt.Sprintf("預測週末剩餘    %d%%", int(projectedRemaining))
+	}
+
+	now := time.Now().In(taipei)
+	nowStr := fmt.Sprintf("%d/%d %02d:%02d", now.Month(), now.Day(), now.Hour(), now.Minute())
+
 	msg := fmt.Sprintf(
-		"Claude Pro 週用量進度\n\nSession 剩餘    %d%%\n下次 Reset      %s\n\n本週已用        %d%%\n預測週末剩餘    %d%%\n本週 Reset      %s（%s 後）\n\n今天建議再用    %d%%\n\n%s",
+		"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n%s\n\n5小時 Session 剩餘  %d%%\n下次 Reset  %s\n\n本週已用    %d%%\n%s\n週 Reset  %s（+%s）\n\n今天建議再用  %d%%\n\n%s",
+		nowStr,
 		remaining(sessionUtil),
 		formatTime(sessionResetsAt),
 		int(weeklyUtil),
-		int(projectedRemaining),
+		weeklyProjectionLine,
 		formatTime(weeklyResetsAt),
 		formatDuration(timeUntilWeeklyReset),
 		int(dailySuggestion),
