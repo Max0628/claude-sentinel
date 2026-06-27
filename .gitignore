@@ -1,0 +1,10 @@
+# 敏感設定（不進 repo）
+.env
+*.env
+
+# Build 產出
+claude-sentinel
+dist/
+
+# macOS
+.DS_Store
