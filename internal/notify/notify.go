@@ -19,7 +19,7 @@ func formatTime(iso string) string {
 		return iso
 	}
 	t = t.In(taipei)
-	return fmt.Sprintf("%02d/%02d (%s) %02d:%02d",
+	return fmt.Sprintf("%02d/%02d(%s) %02d:%02d",
 		t.Month(), t.Day(), weekdays[t.Weekday()], t.Hour(), t.Minute())
 }
 
@@ -27,9 +27,9 @@ func formatDuration(d time.Duration) string {
 	days := int(d.Hours()) / 24
 	hours := int(d.Hours()) % 24
 	if days > 0 {
-		return fmt.Sprintf("%d 天 %d 小時", days, hours)
+		return fmt.Sprintf("%d天%d時", days, hours)
 	}
-	return fmt.Sprintf("%d 小時", hours)
+	return fmt.Sprintf("%d時", hours)
 }
 
 func remaining(utilization float64) int {
