@@ -9,4 +9,4 @@ ExecStart=/usr/bin/podman run --rm \
   --env-file %h/.config/claude-sentinel/env \
   -v %h/.claude/.credentials.json:/app/credentials.json:ro \
   -v %h/.config/claude-sentinel/state.json:/app/state.json:rw \
-  localhost/claude-sentinel:latest
+  docker.io/max0628/claude-sentinel:latest
