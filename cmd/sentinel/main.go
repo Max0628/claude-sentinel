@@ -17,8 +17,7 @@ const (
 	defaultCredentialsPath  = "/app/credentials.json"
 	defaultStatePath        = "/app/state.json"
 	weeklyMinutes           = float64(7 * 24 * 60)
-	minElapsedBeforePace    = 24 * time.Hour
-	paceAlertInterval       = 20 * time.Minute
+	paceAlertInterval = 20 * time.Minute
 )
 
 func main() {
@@ -89,10 +88,8 @@ func main() {
 
 	// Rule 4: pace alert every 30 minutes (while weekly < 90%)
 	if !isFirstRun && usage.SevenDay.Utilization < 90 {
-		weeklyStart := weeklyStartTime(usage.SevenDay.ResetsAt)
-		elapsed := time.Since(weeklyStart)
-
-		if elapsed >= minElapsedBeforePace && shouldSendPaceAlert(s.LastPaceAlertSentAt, paceAlertInterval) {
+		if shouldSendPaceAlert(s.LastPaceAlertSentAt, paceAlertInterval) {
+			elapsed := time.Since(weeklyStartTime(usage.SevenDay.ResetsAt))
 			projected, daily := calcPace(usage.SevenDay.Utilization, elapsed, usage.SevenDay.ResetsAt)
 			if err := notify.PaceAlert(webhookURL, usage.SevenDay.Utilization, usage.SevenDay.ResetsAt, projected, daily); err != nil {
 				log.Printf("notify pace alert: %v", err)

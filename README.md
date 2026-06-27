@@ -93,8 +93,6 @@ systemctl --user disable --now claude-sentinel.timer
 
 80% 以上的週用量門檻通知加上紅色驚嘆號（❗）。
 
-Rule 4 從週期開始滿 24 小時後才啟動，避免週初數據不穩定造成誤報。
-
 ### Rule 4 督促強度
 
 根據「預測週末剩餘 %」分為 10 個情緒等級。預測公式：
