@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Claude Sentinel every 10 minutes
+
+[Timer]
+OnActiveSec=1min
+OnUnitInactiveSec=10min
+AccuracySec=30sec
+Persistent=true
+Unit=claude-sentinel.service
+
+[Install]
+WantedBy=timers.target

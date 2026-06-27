@@ -1,0 +1,12 @@
+[Unit]
+Description=Check Claude Pro quota and send Discord notifications
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/podman run --rm \
+  --env-file %h/.config/claude-sentinel/env \
+  -v %h/.claude/.credentials.json:/app/credentials.json:ro \
+  -v %h/.config/claude-sentinel/state.json:/app/state.json:rw \
+  localhost/claude-sentinel:latest
