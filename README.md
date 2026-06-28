@@ -89,7 +89,7 @@ systemctl --user disable --now claude-sentinel.timer
 | 1 | Session 用量偏高 | 5 小時使用率 ≥ 80% | 每個 session 一次 |
 | 2 | Session 重置 | `resets_at` 時間戳改變 | 每次重置 |
 | 3 | 週用量門檻通知 | 7 天使用率每達到 10%、20%、30%、40%、50%、60%、70%、80%、90% | 每個門檻各一次 |
-| 4 | 週用量進度督促 | 週用量 < 90%，且已進入週期超過 24 小時 | 每 20 分鐘一次 |
+| 4 | 週用量進度督促 | 週用量 < 90% | 每 20 分鐘一次 |
 
 80% 以上的週用量門檻通知加上紅色驚嘆號（❗）。
 
@@ -127,9 +127,9 @@ systemctl --user disable --now claude-sentinel.timer
 ```
 Claude Pro
 
-Session 剩餘    18%
+5小時 Session 剩餘  18%
 本週剩餘        64%
-下次 Reset      06/28 (六) 18:40
+下次 Reset      06/28(日) 18:40
 ```
 
 ### Rule 2 — Session 重置
@@ -138,10 +138,8 @@ Session 剩餘    18%
 Claude Pro Session 已重置
 
 Session 剩餘    100%
-本週剩餘        45%
+本週剩餘        94%
 ```
-
-本週剩餘隨每次重置一起顯示，讓你知道在密集使用時週額度正在快速消耗。
 
 ### Rule 3 — 週用量通知（10%–70%）
 
@@ -149,7 +147,7 @@ Session 剩餘    100%
 Claude Pro 本週用量提醒
 
 本週已使用      40%
-本週 Reset      06/30 (二) 12:00
+本週 Reset      06/30(二) 12:00
 ```
 
 ### Rule 3 — 週用量通知（80%–90%）
@@ -158,7 +156,7 @@ Claude Pro 本週用量提醒
 ❗ Claude Pro 本週用量警告
 
 本週已使用      82%
-本週 Reset      06/30 (二) 12:00
+本週 Reset      06/30(二) 12:00
 
 本週請保守使用 Claude。
 ```
@@ -166,28 +164,22 @@ Claude Pro 本週用量提醒
 ### Rule 4 — 週用量進度督促（每 20 分鐘）
 
 ```
-Claude Pro 週用量進度
+6/28 17:27
 
-本週已用        24%
-預測週末剩餘    0%
-距 Reset        6 天 20 小時
+5小時 Session 剩餘  76%
+下次 Reset  06/28(日) 22:19
 
-今天建議再用    11%
+本週已用    7%
+預測週末剩餘    60%
+週 Reset  07/04(六) 12:00（+5天18時）
 
-完美節奏，繼續。
+今天建議再用  16%
+
+步調穩健，繼續。
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 ```
 
-```
-Claude Pro 週用量進度
-
-本週已用        8%
-預測週末剩餘    72%
-距 Reset        4 天 12 小時
-
-今天建議再用    23%
-
-🤬 幹！你到底在幹嘛？70% 要沒了！
-```
+預測週末剩餘為 0% 時顯示「週末預期會用完」。
 
 ---
 
@@ -197,9 +189,9 @@ Claude Pro 週用量進度
 - 確認 `~/.config/claude-sentinel/env` 裡的 Discord Webhook URL 正確
 - 手動執行看看：`systemctl --user start claude-sentinel.service`，再用 `journalctl` 查看 log
 
-**API 認證失敗**
-- `~/.claude/.credentials.json` 裡的 access token 可能過期
-- 在這台機器上開啟 Claude Code，讓它自動重新整理 token
+**API 認證失敗（401）**
+- sentinel 會自動用 refresh token 換新的 access token 並重試
+- 如果仍然失敗（refresh token 也過期），在這台機器上開啟 Claude Code 重新登入
 
 **重複收到相同通知**
 - 重置 state 檔案：`echo '{}' > ~/.config/claude-sentinel/state.json`

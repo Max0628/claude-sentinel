@@ -117,7 +117,7 @@ func PaceAlert(webhookURL string, sessionUtil float64, sessionResetsAt string, w
 	nowStr := fmt.Sprintf("%d/%d %02d:%02d", now.Month(), now.Day(), now.Hour(), now.Minute())
 
 	msg := fmt.Sprintf(
-		"▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n%s\n\n5小時 Session 剩餘  %d%%\n下次 Reset  %s\n\n本週已用    %d%%\n%s\n週 Reset  %s（+%s）\n\n今天建議再用  %d%%\n\n%s",
+		"%s\n\n5小時 Session 剩餘  %d%%\n下次 Reset  %s\n\n本週已用    %d%%\n%s\n週 Reset  %s（+%s）\n\n今天建議再用  %d%%\n\n%s\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
 		nowStr,
 		remaining(sessionUtil),
 		formatTime(sessionResetsAt),

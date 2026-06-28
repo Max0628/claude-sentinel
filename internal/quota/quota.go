@@ -12,6 +12,8 @@ const (
 	userAgent = "claude-code/2.1.195"
 )
 
+var ErrUnauthorized = fmt.Errorf("unauthorized")
+
 type Window struct {
 	Utilization float64 `json:"utilization"`
 	ResetsAt    string  `json:"resets_at"`
@@ -40,6 +42,9 @@ func Fetch(accessToken string) (*Usage, error) {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode == http.StatusUnauthorized {
+		return nil, ErrUnauthorized
+	}
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("API returned %d", resp.StatusCode)
 	}

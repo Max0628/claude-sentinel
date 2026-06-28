@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"math"
@@ -36,7 +37,20 @@ func main() {
 
 	usage, err := quota.Fetch(creds.AccessToken)
 	if err != nil {
-		log.Fatalf("fetch quota: %v", err)
+		if errors.Is(err, quota.ErrUnauthorized) {
+			log.Println("access token expired, refreshing...")
+			creds, err = credentials.Refresh(credPath)
+			if err != nil {
+				log.Fatalf("refresh token: %v", err)
+			}
+			usage, err = quota.Fetch(creds.AccessToken)
+			if err != nil {
+				log.Fatalf("fetch quota after refresh: %v", err)
+			}
+			fmt.Println("token refreshed successfully")
+		} else {
+			log.Fatalf("fetch quota: %v", err)
+		}
 	}
 
 	s, err := state.Load(statePath)

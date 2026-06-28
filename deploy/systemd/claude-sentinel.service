@@ -7,6 +7,6 @@ After=network-online.target
 Type=oneshot
 ExecStart=/usr/bin/podman run --rm \
   --env-file %h/.config/claude-sentinel/env \
-  -v %h/.claude/.credentials.json:/app/credentials.json:ro \
+  -v %h/.claude/.credentials.json:/app/credentials.json:rw \
   -v %h/.config/claude-sentinel/state.json:/app/state.json:rw \
   docker.io/max0628/claude-sentinel:latest
