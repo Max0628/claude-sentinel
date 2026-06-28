@@ -41,6 +41,7 @@ func main() {
 			log.Println("access token expired, refreshing...")
 			creds, err = credentials.Refresh(credPath)
 			if err != nil {
+				notify.AuthFailed(webhookURL)
 				log.Fatalf("refresh token: %v", err)
 			}
 			usage, err = quota.Fetch(creds.AccessToken)

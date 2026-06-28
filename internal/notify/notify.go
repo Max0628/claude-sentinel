@@ -54,6 +54,10 @@ func send(webhookURL, message string) error {
 	return nil
 }
 
+func AuthFailed(webhookURL string) error {
+	return send(webhookURL, "Claude Sentinel 認證失敗\n\nRefresh token 已過期，無法自動更新。\n請在 T480 上執行 claude 重新登入。")
+}
+
 func SessionLow(webhookURL string, sessionUtil, weeklyUtil float64, sessionResetsAt string) error {
 	msg := fmt.Sprintf(
 		"Claude Pro\n\nSession 剩餘    %d%%\n本週剩餘        %d%%\n下次 Reset      %s",
